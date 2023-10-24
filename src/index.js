@@ -1,5 +1,6 @@
 const express = require('express');
-const { connectDB, disconnectDB } = require('./db/db.js');
+const { connectDB, disconnectDB } = require('./db/db');
+const { Exercise } = require('./models/Exercise');
 
 const app = express();
 
@@ -16,5 +17,7 @@ process.on('SIGINT', () => {
   });
 });
 
-
-// sequelize.close();
+app.get('/new', async() => {
+  const exercise = await Exercise.create({ name: "user" });
+  console.log(exercise);
+});
