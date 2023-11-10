@@ -52,6 +52,12 @@ router.delete('/:exerciseID', async (req, res) => {
     }
 });
 
+// Delete all exercises
+router.delete("/", async(req, res) => {
+    await Exercise.destroy({
+        truncate: true
+    })
+});
 
 module.exports = { exerciseRouter: router }
 
