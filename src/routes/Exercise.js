@@ -37,6 +37,22 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Delete exercise by ID
+router.delete('/:exerciseID', async (req, res) => {
+    const deleteExerciseID = req.params.exerciseID;
+    const deletedExercise = await Exercise.destroy({
+        where: {
+            _id: deleteExerciseID
+        }
+    });
+    try {
+        res.send(`Delete exercise with id ${deleteExerciseID}`, deletedExercise)
+    } catch (err) {
+        res.send(err);
+    }
+});
+
+
 module.exports = { exerciseRouter: router }
 
 
