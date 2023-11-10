@@ -2,7 +2,6 @@ const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 const mySQLpassword = process.env.mySQLpassword;
-console.log(mySQLpassword, "helooo");
 // Option 3: Passing parameters separately (other dialects)
 const sequelize = new Sequelize('fitness_assistant', 'root', mySQLpassword, {
     host: 'localhost',
