@@ -40,13 +40,13 @@ router.post('/', async (req, res) => {
 // Delete exercise by ID
 router.delete('/:exerciseID', async (req, res) => {
     const deleteExerciseID = req.params.exerciseID;
-    const deletedExercise = await Exercise.destroy({
+    await Exercise.destroy({
         where: {
             _id: deleteExerciseID
         }
     });
     try {
-        res.send(`Delete exercise with id ${deleteExerciseID}`, deletedExercise)
+        res.send(`Delete exercise with id ${deleteExerciseID}`)
     } catch (err) {
         res.send(err);
     }
@@ -57,6 +57,11 @@ router.delete("/", async(req, res) => {
     await Exercise.destroy({
         truncate: true
     })
+    try {
+        res.send("deleted all exercises");
+    } catch (err) {
+        res.send(err);
+    }
 });
 
 module.exports = { exerciseRouter: router }
