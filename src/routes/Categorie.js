@@ -2,7 +2,7 @@ const express = require('express');
 const { Categorie } = require('../models/Categorie');
 const router = express.Router();
 
-// fteched all categories
+// feched all categories
 router.get('/', async (req, res) => {
     const fetchedCategories = await Categorie.findAll();
     try {
@@ -12,5 +12,15 @@ router.get('/', async (req, res) => {
         res.send(err);
     }
 });
+
+// create new categorie
+router.post('/', async (req, res) => {
+    const newCategorie = await Categorie.create({name: req.body.name, description: req.body.description });
+    try {
+        res.send(newCategorie.toJSON());
+    } catch (err) {
+        res.send(err);
+    }
+})
 
 module.exports = { categorieRouter : router };
