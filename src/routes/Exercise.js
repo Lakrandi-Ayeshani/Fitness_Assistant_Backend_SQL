@@ -18,7 +18,6 @@ router.get('/', async (req, res) => {
 // Fetched Exercise by primary key
 router.get('/:exerciseID', async (req, res) => {
     const exerciseID = req.params.exerciseID; 
-    console.log(exerciseID);
     const fetchedExercise = await Exercise.findByPk(exerciseID);
     try {
         res.send(fetchedExercise.toJSON());
