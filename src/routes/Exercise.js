@@ -4,6 +4,20 @@ const { Exercise } = require('../models/Exercise');
 
 // PRIVET ACCESS - X
 
+// Fetched Exercise by primary key
+router.get('/:exerciseID', async (req, res) => {
+    const exerciseID = req.params.exerciseID; 
+    const fetchedExercise = await Exercise.findByPk(exerciseID, 
+        { include:  'Category' }
+    );
+    console.log(fetchedExercise.name);
+    try {
+        res.send(fetchedExercise.toJSON());
+    } catch(err) {
+        res.send(err);
+    }
+});
+
 // Fetched all exercises 
 router.get('/', async (req, res) => {
     const fetchedAllExercises = await Exercise.findAll();
@@ -15,20 +29,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Fetched Exercise by primary key
-router.get('/:exerciseID', async (req, res) => {
-    const exerciseID = req.params.exerciseID; 
-    const fetchedExercise = await Exercise.findByPk(exerciseID);
-    try {
-        res.send(fetchedExercise.toJSON());
-    } catch(err) {
-        res.send(err);
-    }
-});
-
 // Add new exercise
 router.post('/', async (req, res) => {
-    const exercise = await Exercise.create({name: req.body.name, description: req.body.description}); 
+    const exercise = await Exercise.create({name: req.body.name, description: req.body.description, cid: req.body.cid}); 
     try {
         res.send(exercise.toJSON());
     } catch(err) {
@@ -41,7 +44,7 @@ router.delete('/:exerciseID', async (req, res) => {
     const deleteExerciseID = req.params.exerciseID;
     await Exercise.destroy({
         where: {
-            _id: deleteExerciseID
+            id: deleteExerciseID
         }
     });
     try {
@@ -62,6 +65,9 @@ router.delete("/", async(req, res) => {
         res.send(err);
     }
 });
+
+// update category
+
 
 module.exports = { exerciseRouter: router }
 

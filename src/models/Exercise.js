@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db/db');
 
-const Exercise = sequelize.define('exercise', {
-    _id: {
+const Exercise = sequelize.define('Exercise', {
+    id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true

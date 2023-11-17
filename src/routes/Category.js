@@ -1,6 +1,7 @@
 const express = require('express');
-const { Category } = require('../models/Category');
 const router = express.Router();
+const { Category } = require('../models/Category');
+const { Exercise } = require('../models/Exercise');
 
 // fetched category by ID
 router.get('/:id', async (req, res) => {
@@ -59,6 +60,18 @@ router.delete('/', async (req, res) => {
     try {
         res.send('Deleted all categories');
     } catch(err) {
+        res.send(err);
+    }
+});
+
+// fetch all exercise associate with category
+router.get('/:categoryID/exercises', async(req, res) => {
+    const fetchedCategory = await Category.findByPk(req.params.categoryID, 
+        { include: Exercise }
+    );
+    try {
+        res.send(fetchedCategory.toJSON().Exercises)
+    } catch (err) {
         res.send(err);
     }
 });
