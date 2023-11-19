@@ -8,9 +8,8 @@ const { Exercise } = require('../models/Exercise');
 router.get('/:exerciseID', async (req, res) => {
     const exerciseID = req.params.exerciseID; 
     const fetchedExercise = await Exercise.findByPk(exerciseID, 
-        { include:  'Category' }
+        { include:  'Category', paranoid: false  }
     );
-    console.log(fetchedExercise.name);
     try {
         res.send(fetchedExercise.toJSON());
     } catch(err) {

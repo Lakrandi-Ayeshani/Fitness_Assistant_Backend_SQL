@@ -13,7 +13,11 @@ const Exercise = sequelize.define('Exercise', {
     },
     description: {
         type: DataTypes.STRING
-    }
+    },
+}, 
+{
+    sequelize,
+    paranoid: true,
 });
 
 module.exports = { Exercise };
