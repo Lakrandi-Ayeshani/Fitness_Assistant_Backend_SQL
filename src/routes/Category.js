@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { Category } = require('../models/Category');
 const { Exercise } = require('../models/Exercise');
+const { Activity } = require('../models/Activity');
 
 // fetched category by ID
 router.get('/:id', async (req, res) => {
     const fetchedCategory = await Category.findByPk(req.params.id, {
-        attributes: ['name', 'description'], paranoid: false
+        attributes: ['name', 'description']
     });
     try {
         res.send(fetchedCategory.toJSON());
@@ -30,7 +31,16 @@ router.get('/', async (req, res) => {
 
 // create new categorie
 router.post('/', async (req, res) => {
-    const newCategory = await Category.create({name: req.body.name, description: req.body.description });
+    const newCategory = await Category.create({
+        name: req.body.name, 
+        description: req.body.description 
+    });
+    await Activity.create({ 
+        resourceType: 'Exercise', 
+        resourceID: newCategory.id, 
+        activityType: 'create', 
+        newValue: newCategory 
+    });
     try {
         res.send(newCategory.toJSON());
     } catch (err) {
