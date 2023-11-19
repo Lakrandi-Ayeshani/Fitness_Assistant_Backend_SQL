@@ -17,6 +17,10 @@ const Category = sequelize.define('Category', {
     description: {
         type: DataTypes.STRING
     }
+},
+{
+    sequelize,
+    paranoid: true,
 });
 
 console.log(sequelize.models);

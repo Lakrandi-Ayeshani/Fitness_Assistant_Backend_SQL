@@ -6,7 +6,7 @@ const { Exercise } = require('../models/Exercise');
 // fetched category by ID
 router.get('/:id', async (req, res) => {
     const fetchedCategory = await Category.findByPk(req.params.id, {
-        attributes: ['name', 'description']
+        attributes: ['name', 'description'], paranoid: false
     });
     try {
         res.send(fetchedCategory.toJSON());
