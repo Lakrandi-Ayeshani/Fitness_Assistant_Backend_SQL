@@ -50,26 +50,38 @@ router.post('/', async (req, res) => {
 
 // delete category by ID 
 router.delete('/:id', async(req, res) => {
+    const fetchedCategory = await Category.findByPk(req.params.id);
     await Category.destroy({ 
         where: {
             id: req.params.id
         }
+    }); 
+    await Activity.create({
+        resourceType: 'Exercise', 
+        resourceID: req.params.id, 
+        activityType: 'create', 
+        oldValue: fetchedCategory, 
+        newValue: 'Deleted'
     });
-    await Activity.update({newValue: 'Deleted'})
-    try {
+    try{
         res.send(`Deleted category which has id ${req.params.id}`);
     } catch (err) {
         res.send(err);
-    }
+    }    
 });
 
 // update category
 router.put('/:categoryID', async(req, res) => {
-    await Category.update({name: req.body.name, description: req.body.description}, {
+    const updateCategory = await Category.update({name: req.body.name, description: req.body.description}, {
         where: {
-            id: req.body.id
-        }
-    })
+            id: req.params.categoryID
+        },
+    });
+    try {
+        res.send(updateCategory.toJSON());
+    } catch (err) {
+        res.send(err);
+    }
 });
 
 // delete all categories
