@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
         description: req.body.description 
     });
     await Activity.create({ 
-        resourceType: 'Exercise', 
+        resourceType: 'Category', 
         resourceID: newCategory.id, 
         activityType: 'create', 
         newValue: newCategory 
@@ -57,17 +57,36 @@ router.delete('/:id', async(req, res) => {
         }
     }); 
     await Activity.create({
-        resourceType: 'Exercise', 
+        resourceType: 'Category', 
         resourceID: req.params.id, 
-        activityType: 'create', 
+        activityType: 'delete by Id', 
         oldValue: fetchedCategory, 
-        newValue: 'Deleted'
     });
     try{
         res.send(`Deleted category which has id ${req.params.id}`);
     } catch (err) {
         res.send(err);
     }    
+});
+
+// delete all categories
+router.delete('/', async (req, res) => {
+    fetchedCategories = await Category.findAll();
+    fetchedCategoriesJSON = fetchedCategories.map(category => category.toJSON());
+    await Category.destroy({
+        truncate: true
+    });
+    await Activity.create({
+        resourceType: 'Category', 
+        resourceID: req.params.id, 
+        activityType: 'delete all', 
+        oldValue: fetchedCategoriesJSON, 
+    });
+    try {
+        res.send('Deleted all categories');
+    } catch(err) {
+        res.send(err);
+    }
 });
 
 // update category
@@ -80,18 +99,6 @@ router.put('/:categoryID', async(req, res) => {
     try {
         res.send(updateCategory.toJSON());
     } catch (err) {
-        res.send(err);
-    }
-});
-
-// delete all categories
-router.delete('/', async (req, res) => {
-    await Category.destroy({
-        truncate: true
-    });
-    try {
-        res.send('Deleted all categories');
-    } catch(err) {
         res.send(err);
     }
 });
