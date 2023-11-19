@@ -55,11 +55,21 @@ router.delete('/:id', async(req, res) => {
             id: req.params.id
         }
     });
+    await Activity.update({newValue: 'Deleted'})
     try {
         res.send(`Deleted category which has id ${req.params.id}`);
     } catch (err) {
         res.send(err);
     }
+});
+
+// update category
+router.put('/:categoryID', async(req, res) => {
+    await Category.update({name: req.body.name, description: req.body.description}, {
+        where: {
+            id: req.body.id
+        }
+    })
 });
 
 // delete all categories
